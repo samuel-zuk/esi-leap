@@ -15,6 +15,7 @@ import sys
 from oslo_service import service
 
 from esi_leap.api import service as wsgi_service
+from esi_leap.common import profiler
 from esi_leap.common import service as esi_leap_service
 import esi_leap.conf
 
@@ -24,6 +25,8 @@ CONF = esi_leap.conf.CONF
 
 def main():
     esi_leap_service.prepare_service(sys.argv)
+    if CONF.profiler.enabled:
+        profiler.setup('esi_leap', CONF.host)
     # Build and start the WSGI app
     launcher = service.ProcessLauncher(CONF, restart_method='mutate')
     server = wsgi_service.WSGIService('esi_leap_api')

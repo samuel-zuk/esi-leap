@@ -13,6 +13,7 @@
 from oslo_db import options as db_options
 from oslo_log import log
 from oslo_service import service
+from osprofiler import opts as profiler_options
 
 import esi_leap.conf
 from esi_leap import objects
@@ -28,6 +29,7 @@ def prepare_service(argv=None, default_config_files=None):
          project='esi-leap',
          version=version.version_info.release_string(),
          default_config_files=default_config_files)
+    profiler_options.set_defaults(CONF)
     db_options.set_defaults(CONF)
     log.setup(CONF, 'esi-leap')
     objects.register_all()
